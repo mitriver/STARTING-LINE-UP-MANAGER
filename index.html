@@ -7,74 +7,88 @@
         * { box-sizing: border-box; }
         body, html { 
             height: 100%; margin: 0; padding: 0; 
-            background-color: #0d1b1a; /* 배경은 어둡게 유지 */
+            background-color: #ffffff; 
             font-family: 'Pretendard', sans-serif; 
-            overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; 
         }
 
-        .메인카드 { 
-            width: 95vw; height: 90vh; /* 화면에 꽉 차지 않게 여백 부여 */
-            max-width: 1600px; max-height: 900px; /* 너무 커지지 않도록 제한 */
-            background: #ffffff; display: flex; position: relative; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* 입체감 추가 */
-            border-radius: 12px; overflow: hidden;
-        }
-
-        .사이드포인트 { width: 3vw; min-width: 30px; background: #00c4b4; }
+        .메인카드 { width: 100vw; height: 100vh; display: flex; position: relative; }
+        .사이드포인트 { width: 4vw; min-width: 40px; background: #00c4b4; flex-shrink: 0; }
 
         .콘텐츠영역 { 
-            flex: 1.2; padding: 4vh 3vw 10vh 3vw; 
+            flex: 1.2; padding: 20px 30px; /* 패딩 축소로 공간 확보 */
             background: linear-gradient(to right, #f8fdfc 0%, #e0f2f1 100%); 
             display: flex; flex-direction: column; 
-            position: relative; overflow-y: auto; 
+            height: 100vh;
         }
 
-        .헤더 { margin-bottom: 3vh; }
-        .헤더 .팀이름 { font-size: 5vw; color: #004d40; font-weight: 950; line-height: 1.1; letter-spacing: -0.2vw; }
-        .헤더 .메인타이틀 { font-size: 1.4vw; color: #00c4b4; font-weight: 700; letter-spacing: 0.3vw; text-transform: uppercase; }
+        .헤더 { margin-bottom: 10px; flex-shrink: 0; }
+        .헤더 .팀이름 { font-size: 55px; color: #004d40; font-weight: 950; line-height: 1; letter-spacing: -2px; }
+        .헤더 .메인타이틀 { font-size: 16px; color: #00c4b4; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
 
-        .섹션제목 { font-size: 1.1vw; color: #00796b; font-weight: 800; margin: 2vh 0 1vh 0; display: flex; align-items: center; }
-        .섹션제목::before { content: ''; width: 4px; height: 1.1vw; background: #00c4b4; margin-right: 8px; border-radius: 2px; }
+        /* 가이드 영역 슬림화 */
+        .상단가이드 {
+            background: #e0f2f1;
+            padding: 8px 15px; border-radius: 6px;
+            font-size: 12px; color: #00796b; font-weight: 600;
+            margin-bottom: 15px; flex-shrink: 0;
+            border: 1px solid rgba(0, 196, 180, 0.3);
+        }
+
+        /* 주전 영역: 간격을 줄여서 1~P까지 한 화면에 배치 */
+        .주전영역 { flex-shrink: 0; }
+        
+        .섹션제목 { 
+            font-size: 15px; color: #00796b; font-weight: 800; 
+            margin: 5px 0 8px 0; flex-shrink: 0; 
+            display: flex; align-items: center; 
+        }
+        .섹션제목::before { content: ''; width: 4px; height: 15px; background: #00c4b4; margin-right: 8px; border-radius: 2px; }
 
         .선수행 { 
-            display: flex; align-items: center; padding: 1.1vh 1.5vw; margin-bottom: 0.4vh; 
-            background: rgba(255,255,255,0.7); border-bottom: 1px solid rgba(0, 150, 136, 0.1); 
-            cursor: pointer; transition: all 0.2s ease; border-radius: 4px;
+            display: flex; align-items: center; 
+            padding: 8px 15px; /* 행 높이 축소 핵심 */
+            margin-bottom: 3px; 
+            background: rgba(255,255,255,0.8); border-bottom: 1px solid rgba(0, 150, 136, 0.1); 
+            cursor: pointer; transition: all 0.1s ease;
+            border-radius: 4px;
         }
-        .선수행:hover { background: rgba(0, 196, 180, 0.1); transform: translateX(5px); }
-        .선수행.드래그중 { opacity: 0.4; background: #e0f2f1; }
-        .선수행.선택됨 { border-left: 0.6vw solid #00c4b4; background: rgba(0, 196, 180, 0.08); }
+        .선수행:hover { background: #fff; transform: translateX(3px); }
+        .선수행.드래그중 { opacity: 0.3; }
+        .선수행.선택됨 { border-left: 6px solid #00c4b4; background: rgba(0, 196, 180, 0.05); }
         .선수행.선택됨 .이름 { color: #d32f2f !important; }
 
-        .번호 { width: 2.5vw; min-width: 25px; color: #00c4b4; font-weight: 800; font-size: 1.8vw; }
-        .이름 { width: 10vw; min-width: 90px; color: #222; font-weight: 700; font-size: 2vw; }
-        .포지션 { width: 7vw; color: #666; font-size: 1.3vw; text-align: center; }
-        .정보 { flex: 1; text-align: right; font-size: 1.2vw; color: #009688; }
+        /* 폰트 사이즈 미세 조정으로 가독성과 공간 모두 확보 */
+        .번호 { width: 30px; color: #00c4b4; font-weight: 800; font-size: 20px; }
+        .이름 { width: 110px; color: #222; font-weight: 700; font-size: 22px; }
+        .포지션 { width: 80px; color: #666; font-size: 15px; text-align: center; }
+        .정보 { flex: 1; text-align: right; font-size: 15px; color: #009688; }
 
-        .진짜바닥안내 { 
-            position: absolute; bottom: 0; left: 0; width: 55%; 
-            background: rgba(224, 242, 241, 0.95); padding: 1.2vh 2vw; 
-            font-size: 0.9vw; color: #00796b; font-weight: 600; 
-            border-top: 1px solid rgba(0, 196, 180, 0.2); z-index: 100; pointer-events: none; 
+        /* 벤치 영역: 남는 공간에 작게 배치 */
+        .벤치스크롤영역 {
+            flex: 1; 
+            overflow-y: auto; 
+            margin-top: 5px;
+            padding-right: 5px;
         }
 
+        .감독영역 { margin-top: auto; padding-top: 10px; text-align: right; flex-shrink: 0; }
+        .감독이름 { font-size: 20px; font-weight: 900; color: #004d40; }
+
+        /* 우측 사진 영역 */
         .사진영역 { flex: 1; position: relative; background-color: #f0f0f0; overflow: hidden; }
         .사진영역 img { width: 100%; height: 100%; object-fit: cover; position: absolute; bottom: 0; z-index: 1; }
 
         .하단배너 { 
-            position: absolute; bottom: 8vh; right: 0; width: 100%; 
-            background: rgba(0, 77, 64, 0.92); color: white; padding: 2.5vh 2.5vw; 
+            position: absolute; bottom: 5%; right: 0; width: 100%; 
+            background: rgba(0, 77, 64, 0.95); color: white; padding: 20px 30px; 
             z-index: 2; text-align: right; 
         }
-        .배너이름 { font-size: 3vw; font-weight: 800; margin-bottom: 0.5vh; }
-        .배너설명 { width: 100%; background: transparent; border: none; font-size: 1.3vw; color: #b2dfdb; text-align: right; outline: none; }
+        .배너이름 { font-size: 38px; font-weight: 800; margin-bottom: 3px; }
+        .배너설명 { width: 100%; background: transparent; border: none; font-size: 16px; color: #b2dfdb; text-align: right; outline: none; }
 
-        .감독영역 { margin-top: 20px; text-align: right; padding-right: 1vw; }
-        .감독이름 { font-size: 2vw; font-weight: 900; color: #004d40; }
-
-        .콘텐츠영역::-webkit-scrollbar { width: 6px; }
-        .콘텐츠영역::-webkit-scrollbar-thumb { background: #00c4b4; border-radius: 10px; }
+        .벤치스크롤영역::-webkit-scrollbar { width: 4px; }
+        .벤치스크롤영역::-webkit-scrollbar-thumb { background: #00c4b4; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -88,28 +102,35 @@
             <div class="메인타이틀">STARTING LINE-UP</div>
         </div>
 
-        <div class="섹션제목">STARTING LINE-UP</div>
-        <div class="타순리스트" id="주전목록">
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="고여름"><span class="번호">1</span><span class="이름">고여름</span><span class="포지션">포수</span><span class="정보">160cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="마다옴"><span class="번호">2</span><span class="이름">마다옴</span><span class="포지션">2루수</span><span class="정보">172cm</span></div>
-            <div class="선수행 선택됨" draggable="true" onclick="선수선택(this)" data-name="녹초"><span class="번호">3</span><span class="이름">녹초</span><span class="포지션">지타</span><span class="정보">163cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="냐냐"><span class="번호">4</span><span class="이름">냐냐</span><span class="포지션">중견수</span><span class="정보">180cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="히로"><span class="번호">5</span><span class="이름">히로</span><span class="포지션">3루수</span><span class="정보">173cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="미르"><span class="번호">6</span><span class="이름">미르</span><span class="포지션">1루수</span><span class="정보">173cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="유샥크"><span class="번호">7</span><span class="이름">유샥크</span><span class="포지션">좌익수</span><span class="정보">182cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="망야"><span class="번호">8</span><span class="이름">망야</span><span class="포지션">우익수</span><span class="정보">178cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="카나시"><span class="번호">9</span><span class="이름">카나시</span><span class="포지션">유격수</span><span class="정보">174cm</span></div>
-            <div class="선수행" style="background:rgba(0,196,180,0.12); cursor:default;"><span class="번호">P</span><span class="이름">리냐</span><span class="포지션">투수</span><span class="정보">185cm</span></div>
+        <div class="상단가이드">
+            💡 [드래그] 주전·벤치 교체 및 타순 변경 | [클릭] 선수 사진 교체
         </div>
 
-        <div class="섹션제목">BENCH MEMBERS</div>
-        <div class="벤치리스트" id="벤치목록">
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="나솜"><span class="번호">-</span><span class="이름">나솜</span><span class="포지션">후보</span><span class="정보">165cm</span></div>
-            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="달타"><span class="번호">-</span><span class="이름">달타</span><span class="포지션">후보</span><span class="정보">190cm</span></div>
+        <div class="주전영역">
+            <div class="섹션제목">LINE-UP (1-9 & P)</div>
+            <div id="주전목록">
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="고여름"><span class="번호">1</span><span class="이름">고여름</span><span class="포지션">포수</span><span class="정보">160cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="마다옴"><span class="번호">2</span><span class="이름">마다옴</span><span class="포지션">2루수</span><span class="정보">172cm</span></div>
+                <div class="선수행 선택됨" draggable="true" onclick="선수선택(this)" data-name="녹초"><span class="번호">3</span><span class="이름">녹초</span><span class="포지션">지타</span><span class="정보">163cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="냐냐"><span class="번호">4</span><span class="이름">냐냐</span><span class="포지션">중견수</span><span class="정보">180cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="히로"><span class="번호">5</span><span class="이름">히로</span><span class="포지션">3루수</span><span class="정보">173cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="미르"><span class="번호">6</span><span class="이름">미르</span><span class="포지션">1루수</span><span class="정보">173cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="유샥크"><span class="번호">7</span><span class="이름">유샥크</span><span class="포지션">좌익수</span><span class="정보">182cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="망야"><span class="번호">8</span><span class="이름">망야</span><span class="포지션">우익수</span><span class="정보">178cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="카나시"><span class="번호">9</span><span class="이름">카나시</span><span class="포격수</span><span class="정보">174cm</span></div>
+                <div class="선수행" style="background:rgba(0,196,180,0.12); cursor:default;"><span class="번호">P</span><span class="이름">리냐</span><span class="포지션">투수</span><span class="정보">185cm</span></div>
+            </div>
+        </div>
+
+        <div class="벤치스크롤영역">
+            <div class="섹션제목">BENCH</div>
+            <div id="벤치목록">
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="나솜"><span class="번호">-</span><span class="이름">나솜</span><span class="포지션">후보</span><span class="정보">165cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="달타"><span class="번호">-</span><span class="이름">달타</span><span class="포지션">후보</span><span class="정보">190cm</span></div>
+            </div>
         </div>
 
         <div class="감독영역"><span class="감독이름">감독 천양</span></div>
-        <div class="진짜바닥안내"> [조작] 드래그: 주전/벤치 교체 및 타순 변경 | 클릭: 사진 교체 | 배너 문구 수정 가능 </div>
     </div>
 
     <div class="사진영역">
@@ -122,12 +143,13 @@
 </div>
 
 <script>
+    /* 드래그 및 번호 업데이트 로직 (동일) */
     const 주전목록 = document.getElementById('주전목록');
     const 벤치목록 = document.getElementById('벤치목록');
     let 드래그대상 = null;
 
     [주전목록, 벤치목록].forEach(list => {
-        list.addEventListener('dragstart', (e) => { 드래그대상 = e.target; e.target.classList.add('드래그중'); });
+        list.addEventListener('dragstart', (e) => { 드래그대상 = e.target.closest('.선수행'); e.target.classList.add('드래그중'); });
         list.addEventListener('dragend', (e) => { e.target.classList.remove('드래그중'); 번호업데이트(); });
         list.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -161,7 +183,10 @@
             const 번호영역 = 행.querySelector('.번호');
             if (번호영역.innerText !== 'P') 번호영역.innerText = 인덱스 + 1;
         });
-        벤치목록.querySelectorAll('.선수행').forEach(행 => { 행.querySelector('.번호').innerText = '-'; });
+        벤치목록.querySelectorAll('.선수행').forEach(행 => { 
+            const 번호영역 = 행.querySelector('.번호');
+            if (번호영역) 번호영역.innerText = '-'; 
+        });
         동기화배너();
     }
 
