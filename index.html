@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>STARTING LINE-UP MANAGER</title>
+    <style>
+        * { box-sizing: border-box; }
+        body, html {
+            height: 100%; margin: 0; padding: 0;
+            background-color: #0d1b1a;
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+            overflow: hidden;
+        }
+
+        .메인카드 {
+            width: 100vw; height: 100vh;
+            background: #ffffff; display: flex; position: relative;
+        }
+
+        .사이드포인트 {
+            width: 4vw; min-width: 40px; background: #00c4b4;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .콘텐츠영역 {
+            flex: 1.3; padding: 6vh 5vw 12vh 5vw;
+            background: linear-gradient(to right, #f8fdfc 0%, #e0f2f1 100%);
+            display: flex; flex-direction: column; 
+            position: relative;
+            overflow-y: auto;
+        }
+
+        /* 상단 타이틀 영역: 천양키즈 크게, 영어 작게 */
+        .헤더 { margin-bottom: 5vh; }
+        .헤더 .팀이름 { 
+            font-size: 7vw; /* 천양키즈 압도적으로 크게 */
+            color: #004d40; 
+            font-weight: 950; 
+            line-height: 1.1;
+            letter-spacing: -0.3vw;
+        }
+        .헤더 .메인타이틀 { 
+            font-size: 2vw; /* 영어는 작게 */
+            color: #00c4b4; 
+            font-weight: 700; 
+            letter-spacing: 0.3vw; /* 자간을 넓혀 고급스럽게 */
+            margin-top: 0.5vh;
+            text-transform: uppercase;
+        }
+
+        .타순리스트 { width: 100%; margin-bottom: 1vh; }
+        .선수행 {
+            display: flex; align-items: center;
+            padding: 1.5vh 1.5vw; margin-bottom: 0.4vh;
+            background: rgba(255,255,255,0.7);
+            border-bottom: 1px solid rgba(0, 150, 136, 0.15);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .선수행.선택됨 { border-left: 0.8vw solid #00c4b4; background: rgba(0, 196, 180, 0.08); }
+        .선수행.선택됨 .이름 { color: #d32f2f !important; }
+
+        .번호 { width: 4.5vw; min-width: 40px; color: #00c4b4; font-weight: 800; font-size: 2.5vw; }
+        .이름 { width: 14vw; min-width: 120px; color: #222; font-weight: 700; font-size: 2.5vw; }
+        .포지션 { width: 9vw; min-width: 80px; color: #666; font-size: 1.8vw; text-align: center; }
+        .정보 { flex: 1; text-align: right; font-size: 1.6vw; color: #009688; }
+
+        .감독영역 { margin-top: 10px; text-align: right; padding-right: 1.5vw; }
+        .감독이름 { font-size: 2.8vw; font-weight: 900; color: #004d40; }
+
+        .진짜바닥안내 {
+            position: fixed;
+            bottom: 0; left: 0; width: 56.5vw;
+            background: rgba(224, 242, 241, 0.95);
+            padding: 1.5vh 5vw;
+            font-size: 1.1vw; color: #00796b;
+            font-weight: 600; border-top: 1px solid rgba(0, 196, 180, 0.2);
+            z-index: 100; pointer-events: none;
+        }
+
+        .사진영역 { flex: 1; position: relative; background-color: #f0f0f0; overflow: hidden; }
+        .사진영역 img { width: 100%; height: 100%; object-fit: cover; position: absolute; bottom: 0; z-index: 1; }
+
+        .하단배너 {
+            position: absolute; bottom: 10vh; right: 0; width: 100%;
+            background: rgba(0, 77, 64, 0.92); color: white;
+            padding: 3vh 3vw; z-index: 2; text-align: right;
+        }
+        .배너설명 { width: 100%; background: transparent; border: none; font-size: 1.5vw; color: #b2dfdb; text-align: right; outline: none; }
+
+        .콘텐츠영역::-webkit-scrollbar { width: 8px; }
+        .콘텐츠영역::-webkit-scrollbar-thumb { background: #00c4b4; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="메인카드">
+    <div class="사이드포인트"></div>
+
+    <div class="콘텐츠영역">
+        <div class="헤더">
+            <div class="팀이름">천양키즈</div>
+            <div class="메인타이틀">STARTING LINE-UP</div>
+        </div>
+
+        <div class="타순리스트" id="선수목록">
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="고여름"><span class="번호">1</span><span class="이름">고여름</span><span class="포지션">포수</span><span class="정보">160cm</span></div>
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="마다옴"><span class="번호">2</span><span class="이름">마다옴</span><span class="포지션">2루수</span><span class="정보">172cm</span></div>
+            <div class="선수행 선택됨" draggable="true" onclick="선수선택(this)" data-name="녹초"><span class="번호">3</span><span class="이름">녹초</span><span class="포지션">지타</span><span class="정보">163cm</span></div>
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="냐냐"><span class="번호">4</span><span class="이름">냐냐</span><span class="포지션">중견수</span><span class="정보">180cm</span></div>
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="히로"><span class="번호">5</span><span class="이름">히로</span><span class="포지션">3루수</span><span class="정보">173cm</span></div>
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="미르"><span class="번호">6</span><span class="이름">미르</span><span class="포지션">1루수</span><span class="정보">173cm</span></div>
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="유샥크"><span class="번호">7</span><span class="이름">유샥크</span><span class="포지션">좌익수</span><span class="정보">182cm</span></div>
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="망야"><span class="번호">8</span><span class="이름">망야</span><span class="포지션">우익수</span><span class="정보">178cm</span></div>
+            <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="카나시"><span class="번호">9</span><span class="이름">카나시</span><span class="포지션">유격수</span><span class="정보">174cm</span></div>
+            <div class="선수행" style="background:rgba(0,196,180,0.12); cursor:default;"><span class="번호">P</span><span class="이름">리냐</span><span class="포지션">투수</span><span class="정보">185cm</span></div>
+        </div>
+
+        <div class="감독영역"><span class="감독이름">감독 천양</span></div>
+    </div>
+
+    <div class="진짜바닥안내">
+        [조작 가이드] 클릭: 선수 강조 및 사진 교체 | 드래그: 타순 변경 | 배너 문구 직접 수정 가능
+    </div>
+
+    <div class="사진영역">
+        <img id="메인사진" src="녹초.png" alt=" ">
+        <div class="하단배너">
+            <div id="배너이름" style="font-size: 3.5vw; font-weight: 800;">3 녹초</div>
+            <input type="text" class="배너설명" id="배너설명" value="오늘의 기대 선수, 정교한 타격 기대">
+        </div>
+    </div>
+</div>
+
+<script>
+    const 컨테이너 = document.getElementById('선수목록');
+    let 드래그대상 = null;
+
+    컨테이너.addEventListener('dragstart', (e) => { 드래그대상 = e.target; e.target.classList.add('드래그중'); });
+    컨테이너.addEventListener('dragend', (e) => { e.target.classList.remove('드래그중'); 번호업데이트(); });
+    컨테이너.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const 다음요소 = getDragAfterElement(컨테이너, e.clientY);
+        const 투수 = 컨테이너.lastElementChild;
+        if (드래그대상 === 투수) return;
+        if (다음요소 == null) 컨테이너.insertBefore(드래그대상, 투수);
+        else if (다음요소 !== 투수) 컨테이너.insertBefore(드래그대상, 다음요소);
+    });
+
+    function getDragAfterElement(컨테이너, y) {
+        const 드래그가능요소 = [...컨테이너.querySelectorAll('.선수행:not(.드래그중)')];
+        return 드래그가능요소.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) return { offset: offset, element: child };
+            else return closest;
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    function 번호업데이트() {
+        const 모든행 = 컨테이너.querySelectorAll('.선수행');
+        모든행.forEach((행, 인덱스) => {
+            const 번호영역 = 행.querySelector('.번호');
+            if (번호영역.innerText !== 'P') 번호영역.innerText = 인덱스 + 1;
+        });
+        const 선택된행 = 컨테이너.querySelector('.선수행.선택됨');
+        if (선택된행) document.getElementById('배너이름').innerText = `${선택된행.querySelector('.번호').innerText} ${선택된행.dataset.name}`;
+    }
+
+    function 선수선택(요소) {
+        document.querySelectorAll('.선수행').forEach(el => el.classList.remove('선택됨'));
+        요소.classList.add('선택됨');
+        document.getElementById('메인사진').src = `${요소.dataset.name}.png`;
+        document.getElementById('배너이름').innerText = `${요소.querySelector('.번호').innerText} ${요소.dataset.name}`;
+        document.getElementById('배너설명').value = `${요소.dataset.name} 선수의 활약을 기대합니다.`;
+    }
+</script>
+
+</body>
+</html>
