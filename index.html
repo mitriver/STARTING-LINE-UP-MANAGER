@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>STARTING LINE-UP MANAGER</title>
+    <title>천양키즈 STARTING LINE-UP</title>
     <style>
         * { box-sizing: border-box; }
         body, html { 
@@ -20,13 +20,17 @@
             background: linear-gradient(to right, #f8fdfc 0%, #e0f2f1 100%); 
             display: flex; flex-direction: column; 
             height: 100vh;
-            position: relative; /* 하단 가이드 배치를 위해 */
+            position: relative;
         }
 
+        /* 헤더: 팀명 + 부제 */
         .헤더 { margin-bottom: 25px; flex-shrink: 0; }
         .헤더 .팀이름 { font-size: 65px; color: #004d40; font-weight: 950; line-height: 1; letter-spacing: -2px; }
+        .헤더 .부제 { 
+            font-size: 14px; color: #00c4b4; font-weight: 700; 
+            letter-spacing: 4px; margin-top: 8px; text-transform: uppercase; 
+        }
 
-        /* 주전 영역 */
         .주전영역 { flex-shrink: 0; }
         
         .섹션제목 { 
@@ -54,21 +58,17 @@
         .포지션 { width: 90px; color: #666; font-size: 17px; text-align: center; }
         .정보 { flex: 1; text-align: right; font-size: 17px; color: #009688; }
 
-        /* 벤치 영역 */
         .벤치스크롤영역 {
             flex: 1; 
             overflow-y: auto; 
             margin-top: 10px;
-            margin-bottom: 60px; /* 하단 가이드 공간 확보 */
+            margin-bottom: 60px;
             padding-right: 5px;
         }
 
-        /* 조작 가이드 하단 배치 */
+        /* 하단 고정 요소들 */
         .하단가이드 {
-            position: absolute;
-            bottom: 20px;
-            left: 40px;
-            right: 40px;
+            position: absolute; bottom: 20px; left: 40px; right: 40px;
             background: rgba(224, 242, 241, 0.8);
             padding: 10px 20px; border-radius: 6px;
             font-size: 13px; color: #00796b; font-weight: 600;
@@ -76,15 +76,9 @@
             text-align: center;
         }
 
-        .감독영역 { 
-            position: absolute;
-            bottom: 65px;
-            right: 40px;
-            text-align: right; 
-        }
+        .감독영역 { position: absolute; bottom: 65px; right: 40px; text-align: right; }
         .감독이름 { font-size: 22px; font-weight: 900; color: #004d40; }
 
-        /* 우측 사진 영역 */
         .사진영역 { flex: 1; position: relative; background-color: #f0f0f0; overflow: hidden; }
         .사진영역 img { width: 100%; height: 100%; object-fit: cover; position: absolute; bottom: 0; z-index: 1; }
 
@@ -108,6 +102,7 @@
     <div class="콘텐츠영역">
         <div class="헤더">
             <div class="팀이름">천양키즈</div>
+            <div class="부제">STARTING LINE-UP</div>
         </div>
 
         <div class="주전영역">
@@ -129,26 +124,25 @@
         <div class="벤치스크롤영역">
             <div class="섹션제목">후보 명단</div>
             <div id="벤치목록">
-                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="나솜"><span class="번호">-</span><span class="이름">나솜</span><span class="포지션">후보</span><span class="정보">165cm</span></div>
+                <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="나솜"><span class="번호">-</span><span class="이름">나솜</span><span class="포지션">백업포수</span><span class="정보">165cm</span></div>
                 <div class="선수행" draggable="true" onclick="선수선택(this)" data-name="달타"><span class="번호">-</span><span class="이름">달타</span><span class="포지션">후보</span><span class="정보">190cm</span></div>
             </div>
         </div>
 
         <div class="감독영역"><span class="감독이름">감독 천양</span></div>
-        <div class="하단가이드">💡 [드래그] 타순 변경 | [클릭] 선수 교체 | [배너] 문구 수정</div>
+        <div class="하단가이드">💡 [드래그] 타순 변경 | [클릭] 선수 사진 보기 | [배너] 작전 문구 수정</div>
     </div>
 
     <div class="사진영역">
         <img id="메인사진" src="녹초.png" alt=" ">
         <div class="하단배너">
             <div class="배너이름" id="배너이름">3 녹초</div>
-            <input type="text" class="배너설명" id="배너설명" value="오늘의 기대 선수, 정교한 타격 기대">
+            <input type="text" class="배너설명" id="배너설명" value="팀의 연결고리, 정교한 타격을 기대합니다.">
         </div>
     </div>
 </div>
 
 <script>
-    /* 드래그 및 로직 동일 */
     const 주전목록 = document.getElementById('주전목록');
     const 벤치목록 = document.getElementById('벤치목록');
     let 드래그대상 = null;
@@ -208,8 +202,9 @@
         document.querySelectorAll('.선수행').forEach(el => el.classList.remove('선택됨'));
         요소.classList.add('선택됨');
         document.getElementById('메인사진').src = `${요소.dataset.name}.png`;
-        document.getElementById('배너이름').innerText = `${요소.querySelector('.번호').innerText === '-' ? 'B' : 요소.querySelector('.번호').innerText} ${요소.dataset.name}`;
-        document.getElementById('배너설명').value = `${요소.dataset.name} 선수의 활약을 기대합니다.`;
+        const 번호 = 요소.querySelector('.번호').innerText;
+        document.getElementById('배너이름').innerText = `${번호 === '-' ? 'B' : 번호} ${요소.dataset.name}`;
+        document.getElementById('배너설명').value = `${요소.dataset.name} 선수의 필승 활약을 기대합니다.`;
     }
 </script>
 
